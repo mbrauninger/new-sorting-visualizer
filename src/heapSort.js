@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import { useRef, useEffect, useState } from 'react';
-import {makeStyles, MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import {makeStyles, createMuiTheme} from '@material-ui/core/styles';
 import Navbar from './Components/navbar.js'
-import Button from '@material-ui/core/Button';
 import StyledButton from './Components/styledbutton.js'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box';
@@ -10,7 +8,6 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import { withStyles } from '@material-ui/core/styles';
 
 class Canvas extends Component {
@@ -46,7 +43,6 @@ class Canvas extends Component {
     this.sortedList = []
     this.ijList = []
     this.ijValueArray = null
-    {/*where ijValueArray was initally declared */}
     this.arrayStack = null
     this.iDistance = null
     this.jDistance = null
@@ -58,7 +54,7 @@ class Canvas extends Component {
     this.referenceNumber = 0 // final refresh number of whatever the previous state was, needed to determine when the next state finishes
     this.number = 0 // current number of screen refreshes, used to determine when current state ends
     this.checkingNumber = null
-    this.state = "createCheckingNumber" // first state that the program finds itself in
+    this.sortState = "createCheckingNumber" // first state that the program finds itself in
     this.myReq = null
     this.doAnim = false
     this.firstPress = true
@@ -101,7 +97,7 @@ class Canvas extends Component {
     this.referenceNumber = 0 // final refresh number of whatever the previous state was, needed to determine when the next state finishes
     this.number = 0 // current number of screen refreshes, used to determine when current state ends
     this.checkingNumber = null
-    this.state = "createCheckingNumber" // first state that the program finds itself in
+    this.sortState = "createCheckingNumber" // first state that the program finds itself in
     this.myReq = null
     this.doAnim = false
     this.firstPress = true
@@ -191,7 +187,7 @@ class Canvas extends Component {
       i += 1
     }
 
-    if ((this.elementArray.length - 1) % 2 == 1) {
+    if ((this.elementArray.length - 1) % 2 === 1) {
       this.checkingNumber = (Math.floor((this.elementArray.length - 2)) / 2)
     }
     else {
@@ -203,9 +199,7 @@ class Canvas extends Component {
     // i and j boxes are created
     this.ijList.push(new Box(this.x0Value + this.ijValueArray[0] * this.elementWidth, this.yValue + this.elementHeight, this.elementWidth, this.elementHeight, "i", this.elementColor))
     this.ijList.push(new Box(this.x0Value + this.ijValueArray[1] * this.elementWidth, this.yValue + this.elementHeight, this.elementWidth, this.elementHeight, "j", this.elementColor))
-    {/*}
-    var myReq
-    */}
+
     this.arrayStack = [this.elementArray] // sub-arrays will be placed in here to be sorted in the future
 
     for (i in this.elementArray) {
@@ -219,10 +213,10 @@ class Canvas extends Component {
     }
 
     moveIAndJ(array, speedFactor, oldNumber, number) {
-      if (this.state == "calculatingMaxValue")  {
+      if (this.sortState === "calculatingMaxValue")  {
         var parentValue = array[this.ijValueArray[0]].value
         var leftChildValue = array[this.ijValueArray[1]].value
-        if (this.ijValueArray[1] != array.length - 1 - this.sortedCount) {
+        if (this.ijValueArray[1] !== array.length - 1 - this.sortedCount) {
           var rightChildValue = array[this.ijValueArray[1] + 1].value
           if (rightChildValue > leftChildValue) {
             if (rightChildValue > parentValue) {
@@ -231,10 +225,10 @@ class Canvas extends Component {
               array[this.ijValueArray[0]].color = this.parentColor
               array[this.ijValueArray[1]].color = this.childColor
               array[this.ijValueArray[1] + 1].color = this.childColor
-              this.state = "movingJ"
+              this.sortState = "movingJ"
             }
             else {
-              this.state = "calculatingDistance"
+              this.sortState = "calculatingDistance"
             }
           }
           else {
@@ -244,10 +238,10 @@ class Canvas extends Component {
               array[this.ijValueArray[0]].color = this.parentColor
               array[this.ijValueArray[1]].color = this.childColor
               array[this.ijValueArray[1] + 1].color = this.childColor
-              this.state = "pre-switch"
+              this.sortState = "pre-switch"
             }
             else {
-              this.state = "calculatingDistance"
+              this.sortState = "calculatingDistance"
             }
           }
         }
@@ -257,21 +251,21 @@ class Canvas extends Component {
             this.rightElement = array[this.ijValueArray[1]]
             array[this.ijValueArray[0]].color = this.parentColor
             array[this.ijValueArray[1]].color = this.childColor
-            this.state = "pre-switch"
+            this.sortState = "pre-switch"
           }
           else {
-            this.state = "calculatingDistance"
+            this.sortState = "calculatingDistance"
           }
         }
       }
-      if (this.state === "pre-switch") {
+      if (this.sortState === "pre-switch") {
         var waitNumber = oldNumber + 1
-        if (number == waitNumber) {
+        if (number === waitNumber) {
           this.referenceNumber = number
-          this.state = "switching"
+          this.sortState = "switching"
         }
       }
-      if (this.state === "movingJ") {
+      if (this.sortState === "movingJ") {
         var runNumber = oldNumber + (this.elementWidth / speedFactor) + 1
         if (number < runNumber) { // running phase of the switching animation
           this.ijList[1].updateX(speedFactor, "right")
@@ -279,25 +273,25 @@ class Canvas extends Component {
         if (this.ijList[1].x % this.elementWidth === 0 && number < runNumber) {
           this.ijValueArray[1] += 1
         }
-        if (number == runNumber) {
-          this.state = "switching"
+        if (number === runNumber) {
+          this.sortState = "switching"
           this.referenceNumber = number
         }
       }
-      if (this.state === "calculatingDistance") {
-        if (this.ijValueArray[0] == 0) {
-          var waitNumber = oldNumber + 1
-          if (number == waitNumber) {
+      if (this.sortState === "calculatingDistance") {
+        if (this.ijValueArray[0] === 0) {
+          waitNumber = oldNumber + 1
+          if (number === waitNumber) {
             this.referenceNumber = number
-            this.state = "sortingSwitch"
+            this.sortState = "sortingSwitch"
             this.leftElement = array[0]
             this.rightElement = array[array.length - 1 - this.sortedCount]
           }
         }
         else {
           this.iRunNumber = oldNumber + (this.elementWidth / speedFactor) + 1
-          if (array.length % 2 == 0) {
-            if (this.ijValueArray[1] % 2 == 1) {
+          if (array.length % 2 === 0) {
+            if (this.ijValueArray[1] % 2 === 1) {
               this.jRunNumber = oldNumber + (2 * this.elementWidth / speedFactor) + 1
             }
             else {
@@ -305,16 +299,16 @@ class Canvas extends Component {
             }
           }
           else {
-            if (this.ijValueArray[1] % 2 == 0) {
+            if (this.ijValueArray[1] % 2 === 0) {
               this.jRunNumber = oldNumber + (3 * this.elementWidth / speedFactor) + 1
             }
             else {
               this.jRunNumber = oldNumber + (2 * this.elementWidth / speedFactor) + 1
             }        }
-          this.state = "movingIAndJ"
+          this.sortState = "movingIAndJ"
         }
       }
-      if (this.state == "movingIAndJ") {
+      if (this.sortState === "movingIAndJ") {
         if (number < this.iRunNumber) { // running phase of the switching animation
           this.ijList[0].updateX(speedFactor, "left")
         }
@@ -327,11 +321,11 @@ class Canvas extends Component {
         if (this.ijList[1].x % this.elementWidth === 0 && number < this.jRunNumber) {
           this.ijValueArray[1] -= 1
         }
-        if (number == this.jRunNumber) {
+        if (number === this.jRunNumber) {
           this.referenceNumber = number
           this.checkingNumber -= 1
 
-        this.state = "calculatingMaxValue"
+        this.sortState = "calculatingMaxValue"
 
         }
       }
@@ -340,7 +334,7 @@ class Canvas extends Component {
     switchElements(array, speedFactor, oldNumber, number) {
       
       // left and right elements are selected based upon state
-      if (this.state == "switching" || this.state == "sortingSwitch") {
+      if (this.sortState === "switching" || this.sortState === "sortingSwitch") {
         var distance = this.elementArray.indexOf(this.rightElement) - this.elementArray.indexOf(this.leftElement) // number of elements each element must travel across
         var riseNumber = oldNumber + (this.elementHeight / speedFactor) + 1 // number that signals the end of the rising phase of the animation
         var runNumber = riseNumber + (this.elementWidth * distance / speedFactor) + 1 // number that signals the end of the running phase of the animation
@@ -375,12 +369,12 @@ class Canvas extends Component {
           array[array.indexOf(temp2)] = temp1
           this.referenceNumber = number // reference number takes on value of current refresh number
           for (var i in this.elementArray) {
-            if (this.elementArray[i].color == this.parentColor || this.elementArray[i].color == this.childColor) {
+            if (this.elementArray[i].color === this.parentColor || this.elementArray[i].color === this.childColor) {
               this.elementArray[i].color = this.elementColor
             }
           }
-          if (this.ijValueArray[0] === 0 && this.state === "switching") {
-            this.state = "sortingSwitch"
+          if (this.ijValueArray[0] === 0 && this.sortState === "switching") {
+            this.sortState = "sortingSwitch"
             this.leftElement = array[0]
             this.rightElement = array[array.length - 1 - this.sortedCount]
           }
@@ -388,18 +382,18 @@ class Canvas extends Component {
             if (this.ijValueArray[0] === 0) {
               this.sortedCount += 1
               this.rightElement.color = this.sortedColor
-              if (this.sortedCount == this.elementArray.length - 1) {
+              if (this.sortedCount === this.elementArray.length - 1) {
                 this.leftElement.color = this.sortedColor
                 this.rightElement.color = this.sortedColor
                 this.sortingFinished = true
-                this.state = "done"
+                this.sortState = "done"
               }
               else {
-                this.state = "createCheckingNumber"
+                this.sortState = "createCheckingNumber"
               }
             }
             else {
-              this.state = "calculatingDistance"
+              this.sortState = "calculatingDistance"
             }
           }
         }
@@ -407,10 +401,10 @@ class Canvas extends Component {
     }
     
     returnIAndJ(array, speedFactor, oldNumber, number) {
-      if (this.state == "createCheckingNumber") {
+      if (this.sortState === "createCheckingNumber") {
         this.checkingNumber = Math.ceil((array.length - 1 - this.sortedCount) / 2) - 1
         this.iDistance = this.checkingNumber
-        if (array.length % 2 == 1) {
+        if (array.length % 2 === 1) {
           if (this.sortedCount % 2 === 0) {
             this.jDistance = (array.length - 1) - this.ijValueArray[1] - 1 - this.sortedCount
           }
@@ -426,9 +420,9 @@ class Canvas extends Component {
             this.jDistance = (array.length - 1) - this.ijValueArray[1] - (this.sortedCount + 1)
           }
         }
-        this.state = "calculatingDistance2"
+        this.sortState = "calculatingDistance2"
       }
-      if (this.state == "calculatingDistance2") {
+      if (this.sortState === "calculatingDistance2") {
         if (number === oldNumber) { // because "createCheckingNumber" does no animation
           this.iRunNumber = oldNumber + (this.elementWidth * this.iDistance / speedFactor)
           this.jRunNumber = oldNumber + (this.elementWidth * this.jDistance / speedFactor)
@@ -437,7 +431,7 @@ class Canvas extends Component {
           this.iRunNumber = oldNumber + (this.elementWidth * this.iDistance / speedFactor) + 1
           this.jRunNumber = oldNumber + (this.elementWidth * Math.abs(this.jDistance) / speedFactor) + 1
         }
-        this.state = "returningIAndJ"
+        this.sortState = "returningIAndJ"
       }
       if (number < this.iRunNumber) {
         this.ijList[0].updateX(speedFactor, "right")
@@ -459,20 +453,20 @@ class Canvas extends Component {
           }
         }
       }
-      if (number == this.jRunNumber) {
+      if (number === this.jRunNumber) {
         this.referenceNumber = number
-        this.state = "calculatingMaxValue"
+        this.sortState = "calculatingMaxValue"
       }
     }
     partition(array, oldNumber, number, speedFactor) { // implementation of three above functions
-      if (this.state === "calculatingMaxValue" || this.state === "movingJ" || this.state === "movingIAndJ" || this.state  === "calculatingDistance" || this.state === "pre-switch") {
+      if (this.sortState === "calculatingMaxValue" || this.sortState === "movingJ" || this.sortState === "movingIAndJ" || this.sortState  === "calculatingDistance" || this.sortState === "pre-switch") {
         this.moveIAndJ(array, speedFactor, oldNumber, number)
       }
       
-      else if (this.state === "switching" || this.state === "sortingSwitch") {
+      else if (this.sortState === "switching" || this.sortState === "sortingSwitch") {
         this.switchElements(array, speedFactor, oldNumber, number)
       }
-      else if (this.state === "returningIAndJ" || this.state === "createCheckingNumber") {
+      else if (this.sortState === "returningIAndJ" || this.sortState === "createCheckingNumber") {
         this.returnIAndJ(array, speedFactor, oldNumber, number)
       }
     }
@@ -491,7 +485,7 @@ class Canvas extends Component {
       for (var i in this.elementArray) {
         this.elementArray[i].draw()
       }
-      for (var i in this.ijList) {
+      for (i in this.ijList) {
         this.ijList[i].draw()
       }
       this.partition(this.arrayStack[0], this.referenceNumber, this.number, this.speedFactor)
@@ -695,7 +689,7 @@ function HeapSort() {
     const classes = useStyles()
 
   return (
-    <body style={{margin: 0}}>
+    <div style={{margin: 0}}>
       <header className="App-header"></header>
 
       <Navbar/>
@@ -710,7 +704,7 @@ function HeapSort() {
         </Box>
         
       </div>
-    </body>
+    </div>
 
   );
 }

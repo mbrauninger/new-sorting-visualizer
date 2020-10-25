@@ -1,7 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 import Navbar from './Components/navbar.js'
 import Box from '@material-ui/core/Box';
 import {makeStyles, ThemeProvider, createMuiTheme} from '@material-ui/core/styles';
@@ -60,7 +57,7 @@ export default function Home() {
     const classes = useStyles()
   
     return (
-        <body style={{margin: 0}}>
+        <div style={{margin: 0}}>
         <Navbar />
         <ThemeProvider theme={theme}>
         <div className={classes.container}>
@@ -89,7 +86,7 @@ export default function Home() {
                     <Box className={classes.separator}></Box>
                     <Hidden xsDown>
                         <Box className={classes.image}>
-                            <img src="./ProfilePicture.png" alt="picture" width={"90%"} />
+                            <img src="./ProfilePicture.png" alt="" width={"90%"} />
                         </Box>
                     </Hidden>
                 </Box> 
@@ -97,12 +94,12 @@ export default function Home() {
             <Hidden smUp>
             <Box display="flex" width={"100%"} className={classes.smallScreenImage}>
                 <Box m="auto" textAlign="center">
-                    <img src="./ProfilePicture.png" alt="picture" width={"80%"} />
+                    <img src="./ProfilePicture.png" alt="" width={"80%"} />
                 </Box>
             </Box>
             </Hidden>
         </div>
         </ThemeProvider>
-        </body>
+        </div>
     )
   }

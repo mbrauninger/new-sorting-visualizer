@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import { useRef, useEffect, useState } from 'react';
-import {makeStyles, MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+import {makeStyles, createMuiTheme} from '@material-ui/core/styles';
 import Navbar from './Components/navbar.js'
-import Button from '@material-ui/core/Button';
 import StyledButton from './Components/styledbutton.js'
 import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box';
@@ -10,7 +8,6 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import { withStyles } from '@material-ui/core/styles';
 
 class Canvas extends Component {
@@ -55,7 +52,7 @@ class Canvas extends Component {
     this.speedFactor = 25
     this.referenceNumber = 0 // final refresh number of whatever the previous state was, needed to determine when the next state finishes
     this.number = 0 // current number of screen refreshes, used to determine when current state ends
-    this.state = "movingI" // first state that the program finds itself in
+    this.sortState = "movingI" // first state that the program finds itself in
     this.myReq = null
     this.doAnim = false
     this.firstPress = true
@@ -94,7 +91,7 @@ class Canvas extends Component {
     this.jRunNumber = null
     this.referenceNumber = 0 // final refresh number of whatever the previous state was, needed to determine when the next state finishes
     this.number = 0 // current number of screen refreshes, used to determine when current state ends
-    this.state = "movingI" // first state that the program finds itself in
+    this.sortState = "movingI" // first state that the program finds itself in
     this.myReq = null
     this.doAnim = false
     this.firstPress = true
@@ -199,8 +196,8 @@ class Canvas extends Component {
     }
 
     moveI(speedFactor, oldNumber, number) {
-      if (this.state == "movingI") {
-          if (oldNumber == 0) { // for the first animation state of the program
+      if (this.sortState === "movingI") {
+          if (oldNumber === 0) { // for the first animation state of the program
             // rise and runNumbers in this program are calculated by the number of screen refreshes it takes for the element to get to where it needs to be at the "speed" it is travelling at (pixels moved per screen refresh) 
             var runNumber = oldNumber + (this.elementWidth / speedFactor)
           }
@@ -212,44 +209,44 @@ class Canvas extends Component {
             this.ijList[0].updateX(speedFactor, "right") // i moves right until it finds its position
           }
           // i and j values are incremented based upon their direction every time they pass an element
-          if (this.ijList[0].x % this.elementWidth == 0 && number < runNumber) {
+          if (this.ijList[0].x % this.elementWidth === 0 && number < runNumber) {
             this.ijValueArray[0] += 1
           }
-          if (number == runNumber) {
+          if (number === runNumber) {
             this.referenceNumber = number // reference number takes on value of current refresh number
             this.ijValueArray[1] = 0
             this.ijList[1].x = this.x0Value
-            this.state = "calculatingDistance"
+            this.sortState = "calculatingDistance"
           }
       }
     }
 
     moveJ(speedFactor, oldNumber, number) {
-      if (this.state == "calculatingDistance") {
+      if (this.sortState === "calculatingDistance") {
         for (var j in this.insertingArray) {
           if (this.elementArray[j].value > this.elementArray[this.ijValueArray[0]].value) {
             this.jDistance = j
             break
           }
-          if (j == this.insertingArray.length - 1) {
+          if (j === this.insertingArray.length - 1) {
             this.jDistance = this.insertingArray.length - 1
           }
         }
-        this.state = "movingJ" 
+        this.sortState = "movingJ" 
       }
-      if (this.state == "movingJ") {
+      if (this.sortState === "movingJ") {
         this.jRunNumber = oldNumber + (this.elementWidth * this.jDistance / speedFactor) + 1
         // rise and runNumbers in this program are calculated by the number of screen refreshes it takes for the element to get to where it needs to be at the "speed" it is travelling at (pixels moved per screen refresh)
         if (number < this.jRunNumber) {
           this.ijList[1].updateX(speedFactor, "right") // i moves right until it finds its position
         }
         // i and j values are incremented based upon their direction every time they pass an element
-        if (this.ijList[1].x % this.elementWidth == 0 && number < this.jRunNumber) {
+        if (this.ijList[1].x % this.elementWidth === 0 && number < this.jRunNumber) {
           this.ijValueArray[1] += 1
         }
-        if (number == this.jRunNumber) {
+        if (number === this.jRunNumber) {
           this.referenceNumber = number // reference number takes on value of current refresh number
-          this.state = "switching"
+          this.sortState = "switching"
         }
       }
     }
@@ -272,7 +269,7 @@ class Canvas extends Component {
           rightElement.updateY(speedFactor, "up") // right element rises above left
         }
         if (number > riseNumber && number < runRightNumber) { // running phase of the switching animation
-          for (var j = this.ijValueArray[1]; j < this.insertingArray.length; j++) {
+          for (j = this.ijValueArray[1]; j < this.insertingArray.length; j++) {
             this.insertingArray[j].updateX(speedFactor, "right")
           }
         }
@@ -282,17 +279,16 @@ class Canvas extends Component {
         if (number > runLeftNumber && number < dropNumber) { // dropping phase of the animation
           rightElement.updateY(speedFactor, "down") // because right was above left
         }
-        if (number == dropNumber) {
+        if (number === dropNumber) {
           this.insertingArray.splice(this.ijValueArray[0] - this.distance, 0, rightElement)
           this.elementArray = this.insertingArray.concat(this.elementArray.splice(this.ijValueArray[0]+1))
           this.referenceNumber = number // reference number takes on value of current refresh number
-          if (this.ijValueArray[0] == this.elementArray.length - 1) {
+          if (this.ijValueArray[0] === this.elementArray.length - 1) {
             this.sortingFinished = true
-            this.state = "done"
+            this.sortState = "done"
           }
           else {
-            console.log(this.ijValueArray)
-            this.state = "movingI"
+            this.sortState = "movingI"
             this.ijValueArray[1] = 0
             this.ijList[1].x = this.x0Value
           }
@@ -301,26 +297,26 @@ class Canvas extends Component {
       else {
         this.insertingArray.push(this.elementArray[this.ijValueArray[0]])
         this.referenceNumber = number // reference number takes on value of current refresh number
-        if (this.ijValueArray[0] == this.elementArray.length - 1) {
+        if (this.ijValueArray[0] === this.elementArray.length - 1) {
           this.sortingFinished = true
-          this.state = "done"
+          this.sortState = "done"
         }
         else {
           this.ijValueArray[1] = 0
             this.ijList[1].x = this.x0Value
-          this.state = "movingI"
+          this.sortState = "movingI"
         }
       }
     }
 
     partition(oldNumber, number, speedFactor) { // implementation of three above functions
-      if (this.state == "movingI") {
+      if (this.sortState === "movingI") {
         this.moveI(speedFactor, oldNumber, number)
       }
-      else if (this.state == "calculatingDistance" || this.state == "movingJ") {
+      else if (this.sortState === "calculatingDistance" || this.sortState === "movingJ") {
         this.moveJ(speedFactor, oldNumber, number)
       }
-      else if (this.state == "switching") {
+      else if (this.sortState === "switching") {
         this.switchElements(speedFactor, oldNumber, number)
       }
   }
@@ -339,10 +335,10 @@ class Canvas extends Component {
     for (var i in this.insertingArray) {
       this.elementArray[i].color = this.transitionColor
     }
-    for (var i in this.elementArray) {
+    for (i in this.elementArray) {
       this.elementArray[i].draw()
     }
-    for (var i in this.ijList) {
+    for (i in this.ijList) {
       this.ijList[i].draw()
     }
     if (this.sortingFinished) {
@@ -542,7 +538,7 @@ function InsertionSort() {
     const classes = useStyles()
 
   return (
-    <body style={{margin: 0}}>
+    <div style={{margin: 0}}>
       <header className="App-header"></header>
 
       <Navbar/>
@@ -556,7 +552,7 @@ function InsertionSort() {
         </Box>
         
       </div>
-    </body>
+    </div>
 
   );
 }
