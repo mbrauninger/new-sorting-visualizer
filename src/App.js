@@ -13,7 +13,7 @@ function App() {
     <Switch>  
     <div>
       <header className="App-header"></header>
-      componentDidMount() {
+      {
         document.title = 'Mike\'s Sorting Vsiualizer'
       }
       <Route path="/" component={Home} exact/>
