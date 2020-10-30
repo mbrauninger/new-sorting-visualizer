@@ -84,7 +84,7 @@ const Navbar = () => {
               </Hidden>
               <Hidden mdDown>
               <a href='/'><img src="./MBLogo.png" alt="logo" className={classes.logo} href='/' /></a>
-                <Button className={classes.menu_button} color="inherit" href='/'>HOME</Button>
+                <Button className={classes.menu_button} color="inherit" href='/new-sorting-visualizer/#/'>HOME</Button>
                 <Button className={classes.menu_button} color="inherit" href='/new-sorting-visualizer/#/quickSort'>QuickSort</Button>
                 <Button className={classes.menu_button} color="inhereit" href='/new-sorting-visualizer/#/heapSort'>HeapSort</Button>
                 <Button className={classes.menu_button} color="inhereit" href='/new-sorting-visualizer/#/insertionSort'>InsertionSort</Button>
