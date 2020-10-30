@@ -224,12 +224,15 @@ class Canvas extends Component {
     moveJ(speedFactor, oldNumber, number) {
       if (this.sortState === "calculatingDistance") {
         for (var j in this.insertingArray) {
+          j = Number(j)
+          console.log(j, this.insertingArray.length - 1)
+          if (j === this.insertingArray.length - 1) {
+            this.jDistance = this.insertingArray.length - 1
+            break
+          }
           if (this.elementArray[j].value > this.elementArray[this.ijValueArray[0]].value) {
             this.jDistance = j
             break
-          }
-          if (j === this.insertingArray.length - 1) {
-            this.jDistance = this.insertingArray.length - 1
           }
         }
         this.sortState = "movingJ" 
