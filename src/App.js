@@ -6,24 +6,10 @@ import BubbleSort from './bubbleSort.js';
 import InsertionSort from './insertionSort.js';
 import HeapSort from './heapSort.js';
 
+
 function App() {
-
-  return (
-
-    <div>
-      <header className="App-header"></header>
-      {
-        document.title = 'Mike\'s Sorting Vsiualizer'
-      }
-      <HeapSort/>
-    </div>
-
-  );
-}
-
-/*
-function App() {
-
+return (<QuickSort />)
+  /*
   return (
     <BrowserRouter>
     <Switch>  
@@ -40,8 +26,8 @@ function App() {
     </div>
     </Switch>
     </BrowserRouter>
-
   );
+  */
 }
-*/
+
 export default App;
