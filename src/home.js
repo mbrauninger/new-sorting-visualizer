@@ -75,7 +75,7 @@ export default function Home() {
                     <br></br>
                     <br></br>
 
-                    To operate the visualizer, simply click on any of the sorting algorithms listed in the header of this page, choose a sorting speed, and then click the "Sort" button. To make the array size larger or smaller, make your brower wider or narrower and refresh the page. It is also worth noting that you must reset the array via the "Reset" button before you change speeds.
+                    To operate the visualizer, simply click on any of the sorting algorithms listed in the header of this page, choose a sorting speed, and then click the "Sort" button. To make the array size larger or smaller, make your browser wider or narrower and refresh the page. It is also worth noting that you must reset the array via the "Reset" button before you change speeds.
                     
                     <br></br>
                     <br></br>
