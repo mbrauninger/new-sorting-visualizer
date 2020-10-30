@@ -8,8 +8,7 @@ import HeapSort from './heapSort.js';
 
 
 function App() {
-return (<QuickSort />)
-  /*
+
   return (
     <BrowserRouter>
     <Switch>  
@@ -27,7 +26,7 @@ return (<QuickSort />)
     </Switch>
     </BrowserRouter>
   );
-  */
+  
 }
 
 export default App;
