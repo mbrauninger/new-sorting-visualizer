@@ -56,11 +56,11 @@ export default function TemporaryDrawer() {
       onKeyDown={toggleDrawer(anchor, true)}
     >
       <List>
-        <ListItemLink button key={'Home'} href='/'><ListItemIcon><HomeIcon /></ListItemIcon><ListItemText primary={'Home'} /></ListItemLink>
-        <ListItemLink button key={'QuickSort'} href='/quickSort'><ListItemIcon><LooksOneIcon /></ListItemIcon><ListItemText primary={'QuickSort'} /></ListItemLink>
-        <ListItemLink button key={'HeapSort'} href='/heapSort'><ListItemIcon><LooksTwoIcon /></ListItemIcon><ListItemText primary={'HeapSort'} /></ListItemLink>
-        <ListItemLink button key={'InsertionSort'} href='/insertionSort'><ListItemIcon><LooksThreeIcon /></ListItemIcon><ListItemText primary={'InsertionSort'} /></ListItemLink>
-        <ListItemLink button key={'BubbleSort'} href='/bubbleSort'><ListItemIcon><LooksFourIcon /></ListItemIcon><ListItemText primary={'BubbleSort'} /></ListItemLink>
+        <ListItemLink button key={'Home'} href='/new-sorting-visualizer/#/'><ListItemIcon><HomeIcon /></ListItemIcon><ListItemText primary={'Home'} /></ListItemLink>
+        <ListItemLink button key={'QuickSort'} href='/new-sorting-visualizer/#/quickSort'><ListItemIcon><LooksOneIcon /></ListItemIcon><ListItemText primary={'QuickSort'} /></ListItemLink>
+        <ListItemLink button key={'HeapSort'} href='/new-sorting-visualizer/#/heapSort'><ListItemIcon><LooksTwoIcon /></ListItemIcon><ListItemText primary={'HeapSort'} /></ListItemLink>
+        <ListItemLink button key={'InsertionSort'} href='/new-sorting-visualizer/#/insertionSort'><ListItemIcon><LooksThreeIcon /></ListItemIcon><ListItemText primary={'InsertionSort'} /></ListItemLink>
+        <ListItemLink button key={'BubbleSort'} href='/new-sorting-visualizer/#/bubbleSort'><ListItemIcon><LooksFourIcon /></ListItemIcon><ListItemText primary={'BubbleSort'} /></ListItemLink>
       </List>
     </div>
   );
