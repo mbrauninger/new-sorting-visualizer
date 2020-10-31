@@ -235,13 +235,15 @@ class Canvas extends Component {
               }
           }
           if (this.sorted === true) {
-            this.distance = 0
-            i = 0
-            while (this.elementArray[i].color === this.elementColor) {
-              this.distance += 1
-              i += 1
-              if (i < this.elementArray.length) {
-                break
+            if (this.elementArray[1].color == this.sortedColor) {
+              this.distance = 0
+            }
+            else {
+              this.distance = -2
+              i = 0
+              while (this.elementArray[i].color === this.elementColor) {
+                this.distance += 1
+                i += 1
               }
             }
           }
@@ -318,7 +320,9 @@ class Canvas extends Component {
                 break
             }
             if (i === this.elementArray.length - 2) {
-              this.elementArray[this.ijValueArray[1]].color = this.sortedColor
+              if (this.ijValueArray[1] == this.elementArray.length - 1 || this.elementArray[this.ijValueArray[1] + 1].color == this.sortedColor) {
+                this.elementArray[this.ijValueArray[1]].color = this.sortedColor
+              }
                 if (this.elementArray[i].value <= this.elementArray[Number(i) + 1].value) {
                   this.referenceNumber = number // reference number takes on value of current refresh number
                     this.sortState = "finishRun1"
@@ -368,7 +372,13 @@ class Canvas extends Component {
               this.elementArray[j].color = this.sortedColor
             }
           }
-          this.sortState = "resetIAndJ"
+          if (!this.sorted) {
+            this.sortState = "resetIAndJ"
+          }
+          else {
+            this.sortingFinished  = true
+            this.state = "done"
+          }
         }
       }
     }
