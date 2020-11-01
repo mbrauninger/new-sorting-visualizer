@@ -79,11 +79,11 @@ const Navbar = () => {
               </Hidden>
               <Hidden lgUp>
                 <Box mx="auto" position="relative" left={5}>
-                  <a href='/'><img src="./MBLogo.png" alt="logo" className={classes.logo} href='/new-sorting-visualizer/#/' /></a>
+                  <a href='/new-sorting-visualizer/#/'><img src="./MBLogo.png" alt="logo" className={classes.logo} href='/new-sorting-visualizer/#/' /></a>
                 </Box>
               </Hidden>
               <Hidden mdDown>
-              <a href='/'><img src="./MBLogo.png" alt="logo" className={classes.logo} href='/new-sorting-visualizer/#/' /></a>
+              <a href='/new-sorting-visualizer/#/'><img src="./MBLogo.png" alt="logo" className={classes.logo} href='/new-sorting-visualizer/#/' /></a>
                 <Button className={classes.menu_button} color="inherit" href='/new-sorting-visualizer/#/'>HOME</Button>
                 <Button className={classes.menu_button} color="inherit" href='/new-sorting-visualizer/#/quickSort'>QuickSort</Button>
                 <Button className={classes.menu_button} color="inhereit" href='/new-sorting-visualizer/#/heapSort'>HeapSort</Button>
